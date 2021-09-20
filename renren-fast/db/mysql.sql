@@ -1,82 +1,82 @@
 -- 菜单
 CREATE TABLE `sys_menu` (
-  `menu_id` BIGINT NOT NULL AUTO_INCREMENT,
-  `parent_id` BIGINT COMMENT '父菜单ID，一级菜单为0',
-  `name` VARCHAR(50) COMMENT '菜单名称',
-  `url` VARCHAR(200) COMMENT '菜单URL',
-  `perms` VARCHAR(500) COMMENT '授权(多个用逗号分隔，如：user:list,user:create)',
-  `type` INT COMMENT '类型   0：目录   1：菜单   2：按钮',
-  `icon` VARCHAR(50) COMMENT '菜单图标',
-  `order_num` INT COMMENT '排序',
+  `menu_id` bigint NOT NULL AUTO_INCREMENT,
+  `parent_id` bigint COMMENT '父菜单ID，一级菜单为0',
+  `name` varchar(50) COMMENT '菜单名称',
+  `url` varchar(200) COMMENT '菜单URL',
+  `perms` varchar(500) COMMENT '授权(多个用逗号分隔，如：user:list,user:create)',
+  `type` int COMMENT '类型   0：目录   1：菜单   2：按钮',
+  `icon` varchar(50) COMMENT '菜单图标',
+  `order_num` int COMMENT '排序',
   PRIMARY KEY (`menu_id`)
 ) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8mb4 COMMENT='菜单管理';
 
 -- 系统用户
 CREATE TABLE `sys_user` (
-  `user_id` BIGINT NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(50) NOT NULL COMMENT '用户名',
-  `password` VARCHAR(100) COMMENT '密码',
-  `salt` VARCHAR(20) COMMENT '盐',
-  `email` VARCHAR(100) COMMENT '邮箱',
-  `mobile` VARCHAR(100) COMMENT '手机号',
-  `status` TINYINT COMMENT '状态  0：禁用   1：正常',
-  `create_user_id` BIGINT(20) COMMENT '创建者ID',
-  `create_time` DATETIME COMMENT '创建时间',
+  `user_id` bigint NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) NOT NULL COMMENT '用户名',
+  `password` varchar(100) COMMENT '密码',
+  `salt` varchar(20) COMMENT '盐',
+  `email` varchar(100) COMMENT '邮箱',
+  `mobile` varchar(100) COMMENT '手机号',
+  `status` tinyint COMMENT '状态  0：禁用   1：正常',
+  `create_user_id` bigint(20) COMMENT '创建者ID',
+  `create_time` datetime COMMENT '创建时间',
   PRIMARY KEY (`user_id`),
   UNIQUE INDEX (`username`)
 ) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8mb4 COMMENT='系统用户';
 
 -- 系统用户Token
 CREATE TABLE `sys_user_token` (
-  `user_id` BIGINT(20) NOT NULL,
-  `token` VARCHAR(100) NOT NULL COMMENT 'token',
-  `expire_time` DATETIME DEFAULT NULL COMMENT '过期时间',
-  `update_time` DATETIME DEFAULT NULL COMMENT '更新时间',
+  `user_id` bigint(20) NOT NULL,
+  `token` varchar(100) NOT NULL COMMENT 'token',
+  `expire_time` datetime DEFAULT NULL COMMENT '过期时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `token` (`token`)
 ) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8mb4 COMMENT='系统用户Token';
 
 -- 系统验证码
 CREATE TABLE `sys_captcha` (
-  `uuid` CHAR(36) NOT NULL COMMENT 'uuid',
-  `code` VARCHAR(6) NOT NULL COMMENT '验证码',
-  `expire_time` DATETIME DEFAULT NULL COMMENT '过期时间',
+  `uuid` char(36) NOT NULL COMMENT 'uuid',
+  `code` varchar(6) NOT NULL COMMENT '验证码',
+  `expire_time` datetime DEFAULT NULL COMMENT '过期时间',
   PRIMARY KEY (`uuid`)
 ) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8mb4 COMMENT='系统验证码';
 
 -- 角色
 CREATE TABLE `sys_role` (
-  `role_id` BIGINT NOT NULL AUTO_INCREMENT,
-  `role_name` VARCHAR(100) COMMENT '角色名称',
-  `remark` VARCHAR(100) COMMENT '备注',
-  `create_user_id` BIGINT(20) COMMENT '创建者ID',
-  `create_time` DATETIME COMMENT '创建时间',
+  `role_id` bigint NOT NULL AUTO_INCREMENT,
+  `role_name` varchar(100) COMMENT '角色名称',
+  `remark` varchar(100) COMMENT '备注',
+  `create_user_id` bigint(20) COMMENT '创建者ID',
+  `create_time` datetime COMMENT '创建时间',
   PRIMARY KEY (`role_id`)
 ) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8mb4 COMMENT='角色';
 
 -- 用户与角色对应关系
 CREATE TABLE `sys_user_role` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `user_id` BIGINT COMMENT '用户ID',
-  `role_id` BIGINT COMMENT '角色ID',
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `user_id` bigint COMMENT '用户ID',
+  `role_id` bigint COMMENT '角色ID',
   PRIMARY KEY (`id`)
 ) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8mb4 COMMENT='用户与角色对应关系';
 
 -- 角色与菜单对应关系
 CREATE TABLE `sys_role_menu` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `role_id` BIGINT COMMENT '角色ID',
-  `menu_id` BIGINT COMMENT '菜单ID',
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `role_id` bigint COMMENT '角色ID',
+  `menu_id` bigint COMMENT '菜单ID',
   PRIMARY KEY (`id`)
 ) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8mb4 COMMENT='角色与菜单对应关系';
 
 -- 系统配置信息
 CREATE TABLE `sys_config` (
-	`id` BIGINT NOT NULL AUTO_INCREMENT,
-	`param_key` VARCHAR(50) COMMENT 'key',
-	`param_value` VARCHAR(2000) COMMENT 'value',
-	`status` TINYINT DEFAULT 1 COMMENT '状态   0：隐藏   1：显示',
-	`remark` VARCHAR(500) COMMENT '备注',
+	`id` bigint NOT NULL AUTO_INCREMENT,
+	`param_key` varchar(50) COMMENT 'key',
+	`param_value` varchar(2000) COMMENT 'value',
+	`status` tinyint DEFAULT 1 COMMENT '状态   0：隐藏   1：显示',
+	`remark` varchar(500) COMMENT '备注',
 	PRIMARY KEY (`id`),
 	UNIQUE INDEX (`param_key`)
 ) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8mb4 COMMENT='系统配置信息表';
@@ -84,49 +84,49 @@ CREATE TABLE `sys_config` (
 
 -- 系统日志
 CREATE TABLE `sys_log` (
-  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(50) COMMENT '用户名',
-  `operation` VARCHAR(50) COMMENT '用户操作',
-  `method` VARCHAR(200) COMMENT '请求方法',
-  `params` VARCHAR(5000) COMMENT '请求参数',
-  `time` BIGINT NOT NULL COMMENT '执行时长(毫秒)',
-  `ip` VARCHAR(64) COMMENT 'IP地址',
-  `create_date` DATETIME COMMENT '创建时间',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) COMMENT '用户名',
+  `operation` varchar(50) COMMENT '用户操作',
+  `method` varchar(200) COMMENT '请求方法',
+  `params` varchar(5000) COMMENT '请求参数',
+  `time` bigint NOT NULL COMMENT '执行时长(毫秒)',
+  `ip` varchar(64) COMMENT 'IP地址',
+  `create_date` datetime COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8mb4 COMMENT='系统日志';
 
 
 -- 文件上传
 CREATE TABLE `sys_oss` (
-  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-  `url` VARCHAR(200) COMMENT 'URL地址',
-  `create_date` DATETIME COMMENT '创建时间',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `url` varchar(200) COMMENT 'URL地址',
+  `create_date` datetime COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8mb4 COMMENT='文件上传';
 
 
 -- 定时任务
 CREATE TABLE `schedule_job` (
-  `job_id` BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT '任务id',
-  `bean_name` VARCHAR(200) DEFAULT NULL COMMENT 'spring bean名称',
-  `params` VARCHAR(2000) DEFAULT NULL COMMENT '参数',
-  `cron_expression` VARCHAR(100) DEFAULT NULL COMMENT 'cron表达式',
-  `status` TINYINT(4) DEFAULT NULL COMMENT '任务状态  0：正常  1：暂停',
-  `remark` VARCHAR(255) DEFAULT NULL COMMENT '备注',
-  `create_time` DATETIME DEFAULT NULL COMMENT '创建时间',
+  `job_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '任务id',
+  `bean_name` varchar(200) DEFAULT NULL COMMENT 'spring bean名称',
+  `params` varchar(2000) DEFAULT NULL COMMENT '参数',
+  `cron_expression` varchar(100) DEFAULT NULL COMMENT 'cron表达式',
+  `status` tinyint(4) DEFAULT NULL COMMENT '任务状态  0：正常  1：暂停',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`job_id`)
 ) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8mb4 COMMENT='定时任务';
 
 -- 定时任务日志
 CREATE TABLE `schedule_job_log` (
-  `log_id` BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT '任务日志id',
-  `job_id` BIGINT(20) NOT NULL COMMENT '任务id',
-  `bean_name` VARCHAR(200) DEFAULT NULL COMMENT 'spring bean名称',
-  `params` VARCHAR(2000) DEFAULT NULL COMMENT '参数',
-  `status` TINYINT(4) NOT NULL COMMENT '任务状态    0：成功    1：失败',
-  `error` VARCHAR(2000) DEFAULT NULL COMMENT '失败信息',
-  `times` INT(11) NOT NULL COMMENT '耗时(单位：毫秒)',
-  `create_time` DATETIME DEFAULT NULL COMMENT '创建时间',
+  `log_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '任务日志id',
+  `job_id` bigint(20) NOT NULL COMMENT '任务id',
+  `bean_name` varchar(200) DEFAULT NULL COMMENT 'spring bean名称',
+  `params` varchar(2000) DEFAULT NULL COMMENT '参数',
+  `status` tinyint(4) NOT NULL COMMENT '任务状态    0：成功    1：失败',
+  `error` varchar(2000) DEFAULT NULL COMMENT '失败信息',
+  `times` int(11) NOT NULL COMMENT '耗时(单位：毫秒)',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`log_id`),
   KEY `job_id` (`job_id`)
 ) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8mb4 COMMENT='定时任务日志';
@@ -135,11 +135,11 @@ CREATE TABLE `schedule_job_log` (
 
 -- 用户表
 CREATE TABLE `tb_user` (
-  `user_id` BIGINT NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(50) NOT NULL COMMENT '用户名',
-  `mobile` VARCHAR(20) NOT NULL COMMENT '手机号',
-  `password` VARCHAR(64) COMMENT '密码',
-  `create_time` DATETIME COMMENT '创建时间',
+  `user_id` bigint NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) NOT NULL COMMENT '用户名',
+  `mobile` varchar(20) NOT NULL COMMENT '手机号',
+  `password` varchar(64) COMMENT '密码',
+  `create_time` datetime COMMENT '创建时间',
   PRIMARY KEY (`user_id`),
   UNIQUE INDEX (`username`)
 ) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8mb4 COMMENT='用户';
@@ -183,7 +183,7 @@ INSERT INTO `sys_menu`(`menu_id`, `parent_id`, `name`, `url`, `perms`, `type`, `
 INSERT INTO `sys_menu`(`menu_id`, `parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) VALUES (30, 1, '文件上传', 'oss/oss', 'sys:oss:all', 1, 'oss', 6);
 
 INSERT INTO `sys_config` (`param_key`, `param_value`, `status`, `remark`) VALUES ('CLOUD_STORAGE_CONFIG_KEY', '{\"aliyunAccessKeyId\":\"\",\"aliyunAccessKeySecret\":\"\",\"aliyunBucketName\":\"\",\"aliyunDomain\":\"\",\"aliyunEndPoint\":\"\",\"aliyunPrefix\":\"\",\"qcloudBucketName\":\"\",\"qcloudDomain\":\"\",\"qcloudPrefix\":\"\",\"qcloudSecretId\":\"\",\"qcloudSecretKey\":\"\",\"qiniuAccessKey\":\"NrgMfABZxWLo5B-YYSjoE8-AZ1EISdi1Z3ubLOeZ\",\"qiniuBucketName\":\"ios-app\",\"qiniuDomain\":\"http://7xqbwh.dl1.z0.glb.clouddn.com\",\"qiniuPrefix\":\"upload\",\"qiniuSecretKey\":\"uIwJHevMRWU0VLxFvgy0tAcOdGqasdtVlJkdy6vV\",\"type\":1}', '0', '云存储配置信息');
-INSERT INTO `schedule_job` (`bean_name`, `params`, `cron_expression`, `status`, `remark`, `create_time`) VALUES ('testTask', 'renren', '0 0/30 * * * ?', '0', '参数测试', NOW());
+INSERT INTO `schedule_job` (`bean_name`, `params`, `cron_expression`, `status`, `remark`, `create_time`) VALUES ('testTask', 'renren', '0 0/30 * * * ?', '0', '参数测试', now());
 
 
 -- 账号：13612345678  密码：admin
@@ -209,7 +209,7 @@ IS_UPDATE_DATA VARCHAR(1) NOT NULL,
 REQUESTS_RECOVERY VARCHAR(1) NOT NULL,
 JOB_DATA BLOB NULL,
 PRIMARY KEY (SCHED_NAME,JOB_NAME,JOB_GROUP))
-ENGINE=INNODB DEFAULT CHARSET=utf8;
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE QRTZ_TRIGGERS (
 SCHED_NAME VARCHAR(120) NOT NULL,
@@ -231,7 +231,7 @@ JOB_DATA BLOB NULL,
 PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
 FOREIGN KEY (SCHED_NAME,JOB_NAME,JOB_GROUP)
 REFERENCES QRTZ_JOB_DETAILS(SCHED_NAME,JOB_NAME,JOB_GROUP))
-ENGINE=INNODB DEFAULT CHARSET=utf8;
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE QRTZ_SIMPLE_TRIGGERS (
 SCHED_NAME VARCHAR(120) NOT NULL,
@@ -243,7 +243,7 @@ TIMES_TRIGGERED BIGINT(10) NOT NULL,
 PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
 FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
 REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP))
-ENGINE=INNODB DEFAULT CHARSET=utf8;
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE QRTZ_CRON_TRIGGERS (
 SCHED_NAME VARCHAR(120) NOT NULL,
@@ -254,7 +254,7 @@ TIME_ZONE_ID VARCHAR(80),
 PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
 FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
 REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP))
-ENGINE=INNODB DEFAULT CHARSET=utf8;
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE QRTZ_SIMPROP_TRIGGERS
   (          
@@ -275,7 +275,7 @@ CREATE TABLE QRTZ_SIMPROP_TRIGGERS
     PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
     FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP) 
     REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP))
-ENGINE=INNODB DEFAULT CHARSET=utf8;
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE QRTZ_BLOB_TRIGGERS (
 SCHED_NAME VARCHAR(120) NOT NULL,
@@ -286,20 +286,20 @@ PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
 INDEX (SCHED_NAME,TRIGGER_NAME, TRIGGER_GROUP),
 FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
 REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP))
-ENGINE=INNODB DEFAULT CHARSET=utf8;
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE QRTZ_CALENDARS (
 SCHED_NAME VARCHAR(120) NOT NULL,
 CALENDAR_NAME VARCHAR(200) NOT NULL,
 CALENDAR BLOB NOT NULL,
 PRIMARY KEY (SCHED_NAME,CALENDAR_NAME))
-ENGINE=INNODB DEFAULT CHARSET=utf8;
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE QRTZ_PAUSED_TRIGGER_GRPS (
 SCHED_NAME VARCHAR(120) NOT NULL,
 TRIGGER_GROUP VARCHAR(200) NOT NULL,
 PRIMARY KEY (SCHED_NAME,TRIGGER_GROUP))
-ENGINE=INNODB DEFAULT CHARSET=utf8;
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE QRTZ_FIRED_TRIGGERS (
 SCHED_NAME VARCHAR(120) NOT NULL,
@@ -316,7 +316,7 @@ JOB_GROUP VARCHAR(200) NULL,
 IS_NONCONCURRENT VARCHAR(1) NULL,
 REQUESTS_RECOVERY VARCHAR(1) NULL,
 PRIMARY KEY (SCHED_NAME,ENTRY_ID))
-ENGINE=INNODB DEFAULT CHARSET=utf8;
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE QRTZ_SCHEDULER_STATE (
 SCHED_NAME VARCHAR(120) NOT NULL,
@@ -324,13 +324,13 @@ INSTANCE_NAME VARCHAR(200) NOT NULL,
 LAST_CHECKIN_TIME BIGINT(13) NOT NULL,
 CHECKIN_INTERVAL BIGINT(13) NOT NULL,
 PRIMARY KEY (SCHED_NAME,INSTANCE_NAME))
-ENGINE=INNODB DEFAULT CHARSET=utf8;
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE QRTZ_LOCKS (
 SCHED_NAME VARCHAR(120) NOT NULL,
 LOCK_NAME VARCHAR(40) NOT NULL,
 PRIMARY KEY (SCHED_NAME,LOCK_NAME))
-ENGINE=INNODB DEFAULT CHARSET=utf8;
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE INDEX IDX_QRTZ_J_REQ_RECOVERY ON QRTZ_JOB_DETAILS(SCHED_NAME,REQUESTS_RECOVERY);
 CREATE INDEX IDX_QRTZ_J_GRP ON QRTZ_JOB_DETAILS(SCHED_NAME,JOB_GROUP);
