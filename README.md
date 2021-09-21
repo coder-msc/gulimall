@@ -33,8 +33,12 @@ B2B  B2C C2B C2C O2O
 
 
 #### 软件架构
-软件架构说明
 
+商品服务product
+存储服务ware
+订单服务order
+优惠券服务coupon
+用户服务member
 
 #### 安装教程
 
