@@ -65,3 +65,6 @@ B2B  B2C C2B C2C O2O
 1.  maven依赖的问题。
     - `<dependency>`代表本项目依赖，子项目也依赖
     - 如果有个`<optional>`标签，代表本项目依赖，但是子项目不依赖
+
+
+#### 测试代码同时推送gitee github
