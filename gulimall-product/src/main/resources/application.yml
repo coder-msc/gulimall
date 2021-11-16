@@ -18,5 +18,6 @@ mybatis-plus:
     db-config:
       id-type: auto
 
+
 server:
   port: 10000
