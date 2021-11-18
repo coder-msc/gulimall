@@ -20,4 +20,4 @@ mybatis-plus:
 
 
 server:
-  port: 10000
+  port: 10002
