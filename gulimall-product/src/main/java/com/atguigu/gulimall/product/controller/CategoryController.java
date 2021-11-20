@@ -33,24 +33,18 @@ public class CategoryController {
 
 
     /**
-     * 查出所有分类 以及子分类，以树形结构组装起来
+     * @param
+     * @return com.atguigu.common.utils.R
+     * @Author 骑蜗牛的羊
+     * @Description: 查出所有分类 以及子分类，以树形结构组装起来
+     * @Date 2021/11/21 0:20
      */
-
     @RequestMapping("/list/tree")
-    public R list(){
+    public R list() {
         List<CategoryEntity> entities = categoryService.listWithTree();
-        // 筛选出所有一级分类
-//        List<CategoryEntity> level1Menus = entities.stream().
-//                filter((categoryEntity) -> categoryEntity.getParentCid() == 0)
-//                .map((menu) -> {
-//                    menu.setChildren(getChildrens(menu, entities));
-//                    return menu;
-//                }).sorted((menu1, menu2) -> {
-//                    return (menu1.getSort() == null? 0 : menu1.getSort()) - (menu2.getSort() == null? 0 : menu2.getSort());
-//                })
-//                .collect(Collectors.toList());
         return R.ok().put("data", entities);
     }
+
     /**
      * 列表
      */
