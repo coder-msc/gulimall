@@ -4,6 +4,8 @@ import com.atguigu.gulimall.product.service.CategoryBrandRelationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -63,6 +65,27 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
         return level1Menus;
 //        return categoryEntities;
+    }
+
+    @Override // CategoryServiceImpl
+    public Long[] findCateLogPath(Long catelogId) {
+        List<Long> paths = new ArrayList<>();
+        paths = findParentPath(catelogId, paths);
+        // 收集的时候是顺序 前端是逆序显示的 所以用集合工具类给它逆序一下
+        Collections.reverse(paths);
+        return paths.toArray(new Long[paths.size()]);
+    }
+    /**
+     * 递归收集所有父节点
+     */
+    private List<Long> findParentPath(Long catlogId, List<Long> paths) {
+        // 1、收集当前节点id
+        paths.add(catlogId);
+        CategoryEntity byId = this.getById(catlogId);
+        if (byId.getParentCid() != 0) {
+            findParentPath(byId.getParentCid(), paths);
+        }
+        return paths;
     }
 
     /**
