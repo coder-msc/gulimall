@@ -168,9 +168,28 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         return respVo;
     }
 
+    @Transactional
     @Override
     public void updateAttr(AttrVo attrVo) {
+        AttrEntity attrEntity = new AttrEntity();
+        BeanUtils.copyProperties(attrVo, attrEntity);
+        this.updateById(attrEntity);
 
+        // 基本类型才进行修改
+        if (attrEntity.getAttrType() == ProductConstant.AttrEnum.ATTR_TYPE_BASE.getCode()) {
+            // 修改分组关联
+            AttrAttrgroupRelationEntity relationEntity = new AttrAttrgroupRelationEntity();
+
+            relationEntity.setAttrGroupId(attrVo.getAttrGroupId());
+            relationEntity.setAttrId(attrVo.getAttrId());
+            // 查询 attr_id 在 pms_attr_attrgroup_relation 表中是否已经存在 不存在返回0 表示这是添加 反之返回1 为修改 [这里的修改可以修复之前没有设置上的属性]
+            Integer count = relationDao.selectCount(new UpdateWrapper<AttrAttrgroupRelationEntity>().eq("attr_id", attrVo.getAttrId()));
+            if(count > 0){
+                relationDao.update(relationEntity, new UpdateWrapper<AttrAttrgroupRelationEntity>().eq("attr_id", attrVo.getAttrId()));
+            }else {
+                relationDao.insert(relationEntity);
+            }
+        }
     }
 
     @Override
