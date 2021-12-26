@@ -52,6 +52,13 @@ public class AttrGroupController {
         return R.ok();
     }
 
+    /**
+     * @Author 骑蜗牛的羊
+     * @Description:获取分类下所有分组&关联属性
+     * @Date 2021/12/26 23:43
+     * @param catelogId
+     * @return com.atguigu.common.utils.R
+     */
     @GetMapping("/{catelogId}/withattr")
     public R getAttrGroupWithAttrs(@PathVariable("catelogId") Long catelogId) {
         // 1.查询当前分类下的所有属性分组

@@ -17,6 +17,8 @@ import com.atguigu.common.utils.R;
 
 
 
+
+
 /**
  * 会员等级
  *
@@ -46,7 +48,7 @@ public class MemberLevelController {
      */
     @RequestMapping("/info/{id}")
     public R info(@PathVariable("id") Long id){
-		MemberLevelEntity memberLevel = memberLevelService.getById(id);
+        MemberLevelEntity memberLevel = memberLevelService.getById(id);
 
         return R.ok().put("memberLevel", memberLevel);
     }
@@ -56,7 +58,7 @@ public class MemberLevelController {
      */
     @RequestMapping("/save")
     public R save(@RequestBody MemberLevelEntity memberLevel){
-		memberLevelService.save(memberLevel);
+        memberLevelService.save(memberLevel);
 
         return R.ok();
     }
@@ -66,7 +68,7 @@ public class MemberLevelController {
      */
     @RequestMapping("/update")
     public R update(@RequestBody MemberLevelEntity memberLevel){
-		memberLevelService.updateById(memberLevel);
+        memberLevelService.updateById(memberLevel);
 
         return R.ok();
     }
@@ -76,9 +78,10 @@ public class MemberLevelController {
      */
     @RequestMapping("/delete")
     public R delete(@RequestBody Long[] ids){
-		memberLevelService.removeByIds(Arrays.asList(ids));
+        memberLevelService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
     }
+
 
 }
