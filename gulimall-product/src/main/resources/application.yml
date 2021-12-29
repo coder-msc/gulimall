@@ -10,6 +10,7 @@ spring:
         server-addr: 192.168.33.10:8848
   application:
     name: gulimall-product
+
 # MapperScan
 # sql映射文件位置
 mybatis-plus:
