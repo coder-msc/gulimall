@@ -1,14 +1,12 @@
 package com.atguigu.gulimall.ware.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import com.atguigu.gulimall.ware.vo.MergeVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.atguigu.gulimall.ware.entity.PurchaseEntity;
 import com.atguigu.gulimall.ware.service.PurchaseService;
@@ -30,6 +28,79 @@ public class PurchaseController {
     @Autowired
     private PurchaseService purchaseService;
 
+    /**
+     * {
+     *    page: 1,//当前页码
+     *    limit: 10,//每页记录数
+     *    sidx: 'id',//排序字段
+     *    order: 'asc/desc',//排序方式
+     *    key: '华为',//检索关键字
+     *    status: 0,//状态
+     *    wareId: 1,//仓库id
+     * }*/
+    /**
+     * 列表
+     */
+    @RequestMapping("/unreceive/list")
+    public R unreceive(@RequestParam Map<String, Object> params){
+        PageUtils page = purchaseService.queryPageUnreceivePurchase(params);
+
+        return R.ok().put("page", page);
+    }
+    /**{
+     "msg": "success",
+     "code": 0,
+     "page": {
+     "totalCount": 0,
+     "pageSize": 10,
+     "totalPage": 0,
+     "currPage": 1,
+     "list": [{
+     "id": 2,
+     "purchaseId": 1,
+     "skuId": 1,
+     "skuNum": 2,
+     "skuPrice": 22.0000,
+     "wareId": 1,
+     "status": 1
+     }]
+     }
+     }*/
+
+
+
+
+    /**
+     * 合并采购单
+     *
+     * {
+     *   purchaseId: 1, //整单id
+     *   items:[1,2,3,4] //合并项集合
+     * }
+     *
+     * 返回值
+     * {
+     * 	"msg": "success",
+     * 	"code": 0
+     * }
+     */
+    @PostMapping("/merge")
+    public R merge(@RequestBody MergeVo mergeVo){
+        purchaseService.mergePurchase(mergeVo);
+        return R.ok();
+    }
+
+    //ware/purchase/received
+    /**
+     * 领取采购单。采购已经有了人员信息。这个请求需要通过post手动完成
+     * @param ids 采购单id
+     */
+    @PostMapping("/received")
+    public R received(@RequestBody List<Long> ids){
+        purchaseService.received(ids);
+
+        return R.ok();
+    }
     /**
      * 列表
      */
