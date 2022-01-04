@@ -5,9 +5,13 @@ import com.atguigu.gulimall.ware.entity.PurchaseDetailEntity;
 import com.atguigu.gulimall.ware.service.PurchaseDetailService;
 import com.atguigu.gulimall.ware.service.WareSkuService;
 import com.atguigu.gulimall.ware.vo.MergeVo;
+import com.atguigu.gulimall.ware.vo.PurchaseDoneVo;
+import com.atguigu.gulimall.ware.vo.PurchaseItemDoneVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -177,6 +181,66 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseDao, PurchaseEntity
 //            // 根据需求id  批量更新
 //            detailService.updateBatchById(detailEntities);
 //        });
+    }
+
+    /**
+     * {
+     * "id":"1",
+     * "items":[
+     *         {"itemId":1,"status":3,"reason":"完成"},
+     *        {"itemId":3,"status":4,"reason":"无货"}
+     *        ]
+     * }
+     * id：		采购单id
+     * items：	采购项
+     * itemId：	采购需求id
+     * status：	采购状态
+     */
+    @Transactional
+    @Override
+    public void done(PurchaseDoneVo doneVo) {
+        // 1.改变采购单状态
+        Long id = doneVo.getId();
+        Boolean flag = true;
+        List<PurchaseItemDoneVo> items = doneVo.getItems();
+        ArrayList<PurchaseDetailEntity> updates = new ArrayList<>();
+        double price;
+        double p = 0;
+        double sum = 0;
+        // 2.改变采购项状态 // 我也懒得改成lambda了，这块已经熟练了
+        for (PurchaseItemDoneVo item : items) {
+            // 采购失败的情况
+            PurchaseDetailEntity detailEntity = new PurchaseDetailEntity();
+            if (item.getStatus() == WareConstant.PurchaseDetailStatusEnum.HASERROR.getCode()) {
+                flag = false;
+                detailEntity.setStatus(item.getStatus());
+            } else {
+                detailEntity.setStatus(WareConstant.PurchaseDetailStatusEnum.FINISH.getCode());
+                // 3.将成功采购的进行入库
+                // 查出当前采购项的详细信息
+                PurchaseDetailEntity entity = detailService.getById(item.getItemId());
+                // 新增库存： skuId、到那个仓库、sku名字
+                price = wareSkuService.addStock(entity.getSkuId(), entity.getWareId(), entity.getSkuNum());
+                if (price != p) {
+                    p = entity.getSkuNum() * price;
+                }
+                detailEntity.setSkuPrice(new BigDecimal(p));
+                sum += p;
+            }
+            // 设置采购成功的id
+            detailEntity.setId(item.getItemId());
+            updates.add(detailEntity);
+        }
+        // 批量更新采购单
+        detailService.updateBatchById(updates);
+
+        // 对采购单的状态进行更新
+        PurchaseEntity purchaseEntity = new PurchaseEntity();
+        purchaseEntity.setId(id);
+        purchaseEntity.setAmount(new BigDecimal(sum));
+        purchaseEntity.setStatus(flag ? WareConstant.PurchaseStatusEnum.FINISH.getCode() : WareConstant.PurchaseStatusEnum.HASERROR.getCode());
+        purchaseEntity.setUpdateTime(new Date());
+        this.updateById(purchaseEntity);
     }
 
 }
