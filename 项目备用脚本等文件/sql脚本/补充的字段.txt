@@ -1,2 +1,7 @@
 ALTER TABLE `pms_attr` ADD COLUMN value_type TINYINT(4) DEFAULT NULL COMMENT '值类型[0-多选，1-单选]' AFTER search_type;
  -- 实体类也记得补充上
+
+
+
+INSERT INTO sys_menu (menu_id, parent_id, name, url, perms, type, icon, order_num) VALUES (76, 37, '规格维护', 'product/attrupdate', '', 2, 'log', 0);
+--规格维护 显示400问题处理
