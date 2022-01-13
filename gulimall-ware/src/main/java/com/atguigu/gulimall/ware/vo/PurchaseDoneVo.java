@@ -1,10 +1,10 @@
 package com.atguigu.gulimall.ware.vo;
 
+import com.sun.istack.internal.NotNull;
 import lombok.Data;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 /**
  * @author 骑蜗牛的羊
