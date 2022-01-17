@@ -17,7 +17,7 @@ spring:
 #        path: /data/send_sms
 #        appCode:
 server:
-  port: 30000
+  port: 30001
 
 logging:
   level:

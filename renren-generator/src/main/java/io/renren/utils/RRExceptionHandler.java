@@ -41,8 +41,8 @@ public class RRExceptionHandler implements HandlerExceptionResolver {
 			
 			//记录异常日志
 			logger.error(ex.getMessage(), ex);
-			
-			String json = JSON.toJSONString(r);
+//            Object o = JSON.toJSON(r);
+            String json = (String) JSON.toJSON(r);
 			response.getWriter().print(json);
 		} catch (Exception e) {
 			logger.error("RRExceptionHandler 异常处理失败", e);
